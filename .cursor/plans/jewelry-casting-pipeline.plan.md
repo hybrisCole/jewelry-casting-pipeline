@@ -3,13 +3,13 @@ name: Jewelry Casting Pipeline
 overview: Kickstart a standalone Cursor project for a Tashvi → Blender MCP → castable resin → investment casting workflow, with pinned tooling, mesh health gates, manual sprue SOP, and Agent-mode automation scoped to supervised Blender prep only.
 todos:
   - id: prereqs
-    content: Install pinned Blender 4.1.x, uv, Meshmixer; confirm Tashvi Pro and castable resin printer/caster access
+    content: Confirm Blender 5.1.2, install uv + Meshmixer; confirm Tashvi Pro and castable resin printer/caster access
     status: pending
   - id: repo-scaffold
     content: Create ~/WebstormProjects/jewelry-casting-pipeline (new standalone folder, not inside livechatadmin) with folder structure, .gitignore, .blender-version, README
     status: completed
   - id: blender-mcp
-    content: Install blender-mcp addon, configure .cursor/mcp.json with pinned uvx version, run MCP smoke test in Agent mode
+    content: Install official Blender Lab MCP add-on (Blender 5.1+), configure .cursor/mcp.json from bpype/blender_mcp git pin, run MCP smoke test in Agent mode
     status: pending
   - id: docs-sops
     content: "Write docs: mesh-health-gate, shrinkage-table, sprue-placement-sop, ring-size-chart, agent-prompt-templates, setup-macos"
@@ -48,7 +48,7 @@ Stand up that **standalone repo** at `~/WebstormProjects/jewelry-casting-pipelin
 
 - **Nano Banana** (Gemini) — 2D concept PNGs (outside Cursor)
 - **Tashvi** — jewelry mesh export STL/OBJ/GLB (outside Cursor; Pro required for mesh)
-- **Blender + [ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp)** — supervised precision prep via **Cursor Agent mode**
+- **Blender 5.1.2 + [official Blender Lab MCP](https://www.blender.org/lab/mcp-server/)** ([bpype/blender_mcp](https://github.com/bpype/blender_mcp)) — supervised precision prep via **Cursor Agent mode**
 - **Physical** — castable resin print → investment casting
 
 ```mermaid
@@ -84,8 +84,8 @@ flowchart LR
 | Requirement | Action |
 |-------------|--------|
 | macOS | Already confirmed (darwin) |
-| **Blender** | Install and **pin** version (recommend **4.1.x LTS** until smoke-tested; record in `.blender-version`) |
-| **uv** | `brew install uv` — required for `uvx blender-mcp` |
+| **Blender** | **5.1.2** installed — official MCP requires **5.1+**; pinned in `.blender-version` |
+| **uv** | `brew install uv` — required to launch official MCP server via `uvx` |
 | **Tashvi Pro** | Required for STL/OBJ/GLB; free tier is PNG-only — upgrade before mesh workflow |
 | **Meshmixer** | Free Autodesk tool — **mandatory repair gate** before Blender (adversarial finding) |
 | **Castable resin printer** | Note brand/resolution in `docs/equipment.md` (≤50µm MSLA preferred for fine detail) |
@@ -100,7 +100,7 @@ Initialize git repo at `/Users/albertocole/WebstormProjects/jewelry-casting-pipe
 ```
 ~/WebstormProjects/jewelry-casting-pipeline/
 ├── .gitignore                 # .env, *.env, local keys
-├── .blender-version           # e.g. 4.1.1
+├── .blender-version           # 5.1.2
 ├── README.md                  # pipeline overview + quickstart
 ├── .cursor/
 │   ├── mcp.json               # blender-mcp server config
@@ -137,6 +137,23 @@ Plan file: `.cursor/plans/jewelry-casting-pipeline.plan.md`
 
 ## Phase 2 — Blender + MCP setup (macOS)
 
+Uses the **[official Blender Lab MCP](https://www.blender.org/lab/mcp-server/)** — not the third-party [ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp) (different add-on, different PyPI package, older Blender support).
+
+### Architecture (official stack)
+
+```
+Cursor Agent  ⇐ MCP/stdio ⇒  blender-mcp (uvx)  ⇐ TCP socket ⇒  Blender Lab add-on (inside Blender 5.1.2)
+```
+
+Three external pieces per [Blender docs](https://www.blender.org/lab/mcp-server/):
+
+1. **Blender 5.1+** — you have **5.1.2**
+2. **Blender Lab MCP add-on** — installed inside Blender
+3. **MCP server** — launched by Cursor via `uvx` from [bpype/blender_mcp](https://github.com/bpype/blender_mcp)
+4. **LLM client** — Cursor Agent mode
+
+**Security warning (official):** MCP executes LLM-generated Python in Blender without guards. Acceptable for jewelry mesh prep (no sensitive data); do not use on production blend files with secrets.
+
 ### 2a. Blender addons (one-time)
 
 In Blender **Edit → Preferences → Add-ons**, enable:
@@ -144,39 +161,47 @@ In Blender **Edit → Preferences → Add-ons**, enable:
 - **3D Print Toolbox** — wall thickness, overhang, manifold checks
 - **MeasureIt** (optional) — dimension overlays
 
-### 2b. Install blender-mcp addon
+### 2b. Install official Blender Lab MCP add-on
 
-1. Download `addon.py` from [ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp)
-2. **Edit → Preferences → Add-ons → Install**
-3. Enable **Interface: Blender MCP**
-4. In N-panel: start server, click **Connect**
+1. Open Blender **5.1.2**
+2. Install from [blender.org/lab/mcp-server](https://www.blender.org/lab/mcp-server/):
+   - **Drag-and-drop** the extension into Blender **twice** (first adds Blender Lab repo, second installs add-on), **or**
+   - Download from [bpype/blender_mcp releases](https://github.com/bpype/blender_mcp/releases) → Install from Disk
+3. Enable the MCP add-on in Preferences
+4. Start the add-on server from its preferences panel
 
 ### 2c. Cursor MCP config
 
-Create [`.cursor/mcp.json`](.cursor/mcp.json):
+[`.cursor/mcp.json`](.cursor/mcp.json) pins the **official** server from git (do **not** use PyPI `blender-mcp` — that is ahujasid's unrelated package):
 
 ```json
 {
   "mcpServers": {
     "blender": {
       "command": "uvx",
-      "args": ["blender-mcp==1.6.4"]
+      "args": [
+        "--from",
+        "git+https://github.com/bpype/blender_mcp.git@98b0e49#subdirectory=mcp",
+        "blender-mcp"
+      ]
     }
   }
 }
 ```
 
-- Pin version after first successful smoke test (check PyPI for latest stable)
-- **Only one MCP instance** — Cursor OR Claude Desktop, not both (port 9876 conflict)
-- No API keys inline in `mcp.json`; use env vars if needed later
+- Bump git pin after smoke test if a newer official release is needed
+- **Only one MCP client** at a time (Cursor OR another host)
+- No API keys inline in `mcp.json`
 
 ### 2d. Smoke test (required gate)
 
-Before any jewelry work, in **Cursor Agent mode** with Blender open + connected:
+Before any jewelry work, in **Cursor Agent mode** with Blender 5.1.2 open + add-on running:
 
 > Create a UV sphere at origin, apply Subdivision Surface level 2, export as `fixtures/smoke-test.stl`.
 
-If this fails, fix MCP stack before proceeding.
+Official MCP tools include `execute_blender_code`, `get_objects_summary`, and screenshot helpers — Agent uses Python execution for mesh ops.
+
+If this fails, fix MCP stack before proceeding. See [docs/setup-macos.md](docs/setup-macos.md).
 
 ---
 
@@ -305,7 +330,7 @@ Review performed by adversarial subagent; findings integrated above. Summary:
 3. **Shrinkage is compound and metal-specific** — `shrinkage-table.md` + rule requiring metal/resin selection
 4. **No MCP rollback** — versioned STL checkpoints after every major step
 5. **Sprue automation is unreliable** — removed from Agent scope; manual SOP only
-6. **Unpinned Blender/MCP versions** — `.blender-version` + pinned `uvx blender-mcp==X.Y.Z`
+6. **Unpinned Blender/MCP versions** — `.blender-version` (5.1.2) + pinned official `bpype/blender_mcp` git commit in `.cursor/mcp.json`
 
 ### High-risk assumptions to accept consciously
 

@@ -16,11 +16,12 @@ Full skill content deferred until two complete manual+Agent pipeline runs.
 
 ## Required reading (in order)
 
-1. [docs/mesh-health-gate.md](../../docs/mesh-health-gate.md)
-2. [docs/ring-size-chart.md](../../docs/ring-size-chart.md)
-3. [docs/shrinkage-table.md](../../docs/shrinkage-table.md)
-4. [docs/sprue-placement-sop.md](../../docs/sprue-placement-sop.md)
-5. [docs/agent-prompt-templates.md](../../docs/agent-prompt-templates.md)
+1. [docs/setup-macos.md](../../docs/setup-macos.md) — Blender 5.1.2 + official MCP setup
+2. [docs/mesh-health-gate.md](../../docs/mesh-health-gate.md)
+3. [docs/ring-size-chart.md](../../docs/ring-size-chart.md)
+4. [docs/shrinkage-table.md](../../docs/shrinkage-table.md)
+5. [docs/sprue-placement-sop.md](../../docs/sprue-placement-sop.md)
+6. [docs/agent-prompt-templates.md](../../docs/agent-prompt-templates.md)
 
 ## Agent prompts
 

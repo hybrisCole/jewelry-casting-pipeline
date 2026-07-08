@@ -17,7 +17,6 @@ Standalone Cursor project for AI-assisted jewelry design through investment cast
 
 Full project plan: [.cursor/plans/jewelry-casting-pipeline.plan.md](.cursor/plans/jewelry-casting-pipeline.plan.md)
 
-
 1. Open this folder in Cursor: **File → Open Folder**
 2. Complete [docs/setup-macos.md](docs/setup-macos.md)
 3. Run MCP smoke test (see setup doc)
@@ -42,11 +41,11 @@ docs/               SOPs and reference tables
 
 ## Tool versions (pinned)
 
-- Blender: see `.blender-version` (4.1.1)
-- blender-mcp: 1.6.4 (see `.cursor/mcp.json`)
+- Blender: **5.1.2** (see `.blender-version`)
+- MCP: [official Blender Lab MCP](https://www.blender.org/lab/mcp-server/) from [bpype/blender_mcp](https://github.com/bpype/blender_mcp) @ `98b0e49` (see `.cursor/mcp.json`)
 
 ## External tools (not in repo)
 
 - [Tashvi](https://tashvi.ai/) — mesh generation
-- [ahujasid/blender-mcp](https://github.com/ahujasid/blender-mcp) — Blender addon + MCP server
+- [Blender Lab MCP](https://www.blender.org/lab/mcp-server/) — official Blender ↔ LLM bridge (requires Blender 5.1+)
 - Meshmixer — mesh repair gate

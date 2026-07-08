@@ -52,6 +52,8 @@ Do not proceed in Blender until Meshmixer repair passes (see `docs/mesh-health-g
 
 ## Scope limits (v1)
 
+- **Blender 5.1.2** with [official Blender Lab MCP](https://www.blender.org/lab/mcp-server/) only — not third-party ahujasid addon
+- MCP executes LLM Python in Blender unsandboxed — jewelry scenes only, no sensitive blend files
 - Simple bands and solitaire settings only
 - Defer stone-seat verification and automated sprue to v2
 - Decimate to ~50–100K tris before complex booleans if poly count >500K

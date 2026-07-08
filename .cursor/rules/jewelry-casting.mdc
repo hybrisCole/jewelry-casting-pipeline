@@ -1,0 +1,57 @@
+---
+description: Jewelry casting prep rules for Blender MCP workflows — sizing, shrinkage, checkpoints, sprue
+alwaysApply: true
+---
+
+# Jewelry Casting Pipeline Rules
+
+Read SOPs in `docs/` before modifying any mesh.
+
+## Units and import
+
+- Set Blender scene to **Metric**, display **mm**, unit scale **1.0**
+- On import: **Apply All Transforms** before measuring
+- Verify bounding box ~20–24 mm × 20–24 mm × 6–10 mm for rings (scale sanity)
+
+## Ring sizing
+
+- Target inner diameter from `docs/ring-size-chart.md` (US 8 = 18.14 mm ID)
+- **Never uniform-scale head + band together** for finger sizing
+- Separate band from head (bisect at shank/head junction), scale band only, rejoin and clean seam
+- Band/head separation is **supervised** — assist user, do not run unsupervised
+- Log before/after inner diameter in mm
+
+## Shrinkage
+
+- **Ask** metal alloy and castable resin brand before applying scale
+- Use `docs/shrinkage-table.md` — never guess shrinkage factor
+- Confirm whether casting house applies their own compensation (avoid double-scaling)
+
+## Wall thickness and hollow
+
+- Minimum wall: **0.8 mm** sterling (prefer **1.0 mm** for safer casting)
+- Use 3D Print Toolbox to flag thin areas
+- If hollowed: require **≥1 mm drain hole** oriented for flask drainage
+
+## Sprue
+
+- **Manual only** — see `docs/sprue-placement-sop.md`
+- Do **not** auto-generate sprues via MCP
+
+## Checkpointing
+
+Export versioned STL after each major step; **never overwrite**:
+
+`ring_v01_*` → `v02_meshmixer-repaired` → `v03_blender-imported` → `v04_sized` → `v05_hollowed` → `v06_cast-ready`
+
+Stop if manifold gate fails. Revert to previous checkpoint.
+
+## Mesh health gate
+
+Do not proceed in Blender until Meshmixer repair passes (see `docs/mesh-health-gate.md`).
+
+## Scope limits (v1)
+
+- Simple bands and solitaire settings only
+- Defer stone-seat verification and automated sprue to v2
+- Decimate to ~50–100K tris before complex booleans if poly count >500K

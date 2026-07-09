@@ -67,7 +67,7 @@ In Blender Preferences → Add-ons, search and confirm these are enabled:
 ### Notes
 
 - **CAD Sketcher** is still experimental — keep `.blend` backups before parametric edits.
-- **JewelCraft** targets Blender 4.2+; verify behavior on 5.1.2 before relying on it in production.
+- **JewelCraft** targets Blender 4.2+; **v2.18.1 verified on Blender 5.1.2** (scene units, gem add, prongs, gem map). Install from [author releases](https://github.com/mrachinskiy/jewelcraft/releases) — do not use a partial `master` zip; it can miss `assets/gems/gems.blend`.
 - If `print3d-toolbox` or `extra-mesh-objects` fail to install from the online repo, use the legacy modules from [blender/blender-addons](https://github.com/blender/blender-addons): `object_print3d_utils` and `add_mesh_extra_objects`.
 
 ## 3. Install official Blender Lab MCP add-on

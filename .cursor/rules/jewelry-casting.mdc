@@ -27,6 +27,16 @@ Read SOPs in `docs/` before modifying any mesh.
 - Use `docs/shrinkage-table.md` — never guess shrinkage factor
 - Confirm whether casting house applies their own compensation (avoid double-scaling)
 
+## Blender add-ons (casting CAD)
+
+Required extensions — see `docs/setup-macos.md` for install:
+
+- **3D Print Toolbox** — wall thickness, manifold, overhang checks
+- **MeasureIt** — dimension verification
+- **LoopTools**, **Bool Tool**, **Extra Mesh Objects** — modeling cleanup
+- **JewelCraft** — gems, bezels, prongs (solitaire settings)
+- **CAD Sketcher** — parametric constrained sketches (experimental; keep backups)
+
 ## Wall thickness and hollow
 
 - Minimum wall: **0.8 mm** sterling (prefer **1.0 mm** for safer casting)
@@ -42,7 +52,7 @@ Read SOPs in `docs/` before modifying any mesh.
 
 Export versioned STL after each major step; **never overwrite**:
 
-`ring_v01_*` → `v02_meshmixer-repaired` → `v03_blender-imported` → `v04_sized` → `v05_hollowed` → `v06_cast-ready`
+`ring_v01_raw-export` → `v02_meshmixer-repaired` → `v03_blender-imported` → `v04_sized` → `v05_hollowed` → `v06_cast-ready`
 
 Stop if manifold gate fails. Revert to previous checkpoint.
 

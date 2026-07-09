@@ -16,3 +16,6 @@ meshes/**/scratch/
 # Blender backups
 *.blend1
 *.blend2
+
+# Local add-on download cache
+.cache/

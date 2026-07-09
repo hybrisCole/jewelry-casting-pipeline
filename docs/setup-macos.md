@@ -12,16 +12,63 @@ brew install uv
 
 - **Blender 5.1.2** — installed; must match `.blender-version`. Official MCP requires **Blender 5.1 or newer**.
 - **Meshmixer** — free from Autodesk (archive download). Required repair gate.
-- **Tashvi Pro** — required for STL/OBJ/GLB mesh export.
 
 Record your printer and resin in `docs/equipment.md`.
 
-## 2. Blender addons (one-time)
+## 2. Blender extensions and add-ons (one-time)
 
-Edit → Preferences → Add-ons → enable:
+Blender 5.1 uses **Edit → Preferences → Get Extensions** for most add-ons. Enable online access when prompted so packages can install from [extensions.blender.org](https://extensions.blender.org/).
 
-- **Mesh: 3D Print Toolbox** — wall thickness, overhang, manifold checks
-- **MeasureIt** (optional) — dimension overlays
+### Required for casting prep
+
+| Add-on | Extension ID / module | Purpose |
+|--------|----------------------|---------|
+| **3D Print Toolbox** | `object_print3d_utils` (legacy) or `print3d-toolbox` | Wall thickness, overhang, manifold checks |
+| **MeasureIt** | `measureit` | Dimension overlays in the viewport |
+| **LoopTools** | `looptools` | Circle, bridge, flatten — band cleanup |
+| **Bool Tool** | `bool-tool` | Boolean cuts for hollows and stone pockets |
+| **Extra Mesh Objects** | `add_mesh_extra_objects` (legacy) or `extra-mesh-objects` | Extra primitives and generators |
+| **JewelCraft** | `jewelcraft` | Gems, bezels, prongs, metal weight |
+| **CAD Sketcher** | `CAD_Sketcher` | Constraint-based parametric sketches |
+
+### Already required for this repo
+
+| Add-on | Source | Purpose |
+|--------|--------|---------|
+| **Blender Lab MCP** | [lab.blender.org](https://www.blender.org/lab/mcp-server/) | Cursor Agent ↔ Blender bridge |
+
+### Install from extensions.blender.org
+
+Edit → Preferences → **Get Extensions** → search and install:
+
+1. `print3d-toolbox` (or enable legacy `object_print3d_utils` if online install fails)
+2. `measureit`
+3. `looptools`
+4. `bool-tool`
+5. `extra-mesh-objects` (or enable legacy `add_mesh_extra_objects` if online install fails)
+6. `jewelcraft` — drag [JewelCraft zip](https://github.com/mrachinskiy/jewelcraft/releases) into Blender if not in the repo
+7. `CAD Sketcher` — install from disk via [CAD Sketcher releases](https://github.com/hlorus/CAD_Sketcher) if not in the repo
+
+After each install, confirm the add-on is **enabled** under Preferences → Add-ons.
+
+### Verify installation
+
+In Blender Preferences → Add-ons, search and confirm these are enabled:
+
+- 3D-Print Toolbox
+- MeasureIt
+- LoopTools
+- Bool Tool
+- Extra Objects
+- JewelCraft
+- CAD Sketcher
+- MCP
+
+### Notes
+
+- **CAD Sketcher** is still experimental — keep `.blend` backups before parametric edits.
+- **JewelCraft** targets Blender 4.2+; verify behavior on 5.1.2 before relying on it in production.
+- If `print3d-toolbox` or `extra-mesh-objects` fail to install from the online repo, use the legacy modules from [blender/blender-addons](https://github.com/blender/blender-addons): `object_print3d_utils` and `add_mesh_extra_objects`.
 
 ## 3. Install official Blender Lab MCP add-on
 
@@ -78,7 +125,7 @@ If this fails, fix MCP before any jewelry work.
 
 ## 6. Validate fixture
 
-Run Agent workflow on `fixtures/test-ring-size8.stl` before first Tashvi import. See README checklist.
+Run Agent workflow on `fixtures/test-ring-size8.stl` before first production mesh. See README checklist.
 
 ## Troubleshooting
 
@@ -90,3 +137,5 @@ Run Agent workflow on `fixtures/test-ring-size8.stl` before first Tashvi import.
 | Blender version error | Official MCP requires 5.1+; check `.blender-version` |
 | Wrong scale on import | Check mm units, Apply Transforms, bounding box |
 | First command timeout | Retry; known quirk on first MCP call |
+| Extension install fails | Use **Install from Disk** (arrow menu in Get Extensions); keep zips uncompressed |
+| 3D Print Toolbox missing | Install legacy `object_print3d_utils` from blender-addons repo |

@@ -60,10 +60,22 @@ Stop if manifold gate fails. Revert to previous checkpoint.
 
 Do not proceed in Blender until Meshmixer repair passes (see `docs/mesh-health-gate.md`).
 
+## Gem enclosure (stone lock)
+
+Read `docs/eastwest-signet-workflow.md` before modifying any head or setting.
+
+- Stone must be **mechanically locked** — metal overlaps short ends with bearing below girdle and lip above
+- Build seat by boolean-subtracting an offset gem copy; never leave pillars beside the stone
+- Keep long sides (±Z) and table open; verify with adversarial ray-tests before export
+- Shoulder geometry must not intrude into finger bore (preserve target ID)
+- Run gates: lip, bearing, table open, long-side open, manifold 0, wall under pavilion ≥0.8 mm
+- Stop and revert checkpoint if any gate fails
+
 ## Scope limits (v1)
 
 - **Blender 5.1.2** with [official Blender Lab MCP](https://www.blender.org/lab/mcp-server/) only — not third-party ahujasid addon
 - MCP executes LLM Python in Blender unsandboxed — jewelry scenes only, no sensitive blend files
-- Simple bands and solitaire settings only
-- Defer stone-seat verification and automated sprue to v2
+- Simple bands and signet / semi-bezel settings
+- Defer automated sprue to v2; stone-seat adversarial review is required (see workflow doc)
 - Decimate to ~50–100K tris before complex booleans if poly count >500K
+- Save `.blend` to `fixtures/` after major head iterations

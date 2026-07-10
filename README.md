@@ -23,6 +23,8 @@ Full project plan: [.cursor/plans/jewelry-casting-pipeline.plan.md](.cursor/plan
 4. Validate with `fixtures/test-ring-size8.stl` before first production mesh
 5. Use prompts from [docs/agent-prompt-templates.md](docs/agent-prompt-templates.md)
 
+**Reference build:** east-west emerald signet — [docs/eastwest-signet-workflow.md](docs/eastwest-signet-workflow.md) (gem lock, adversarial gates, `fixtures/eastwest-emerald-ring.blend`)
+
 ## Folder layout
 
 ```

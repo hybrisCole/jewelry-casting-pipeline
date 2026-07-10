@@ -47,3 +47,16 @@ Import fixtures/test-ring-size8.stl. Measure inner diameter — expect ~18.14 mm
 Run cast prep template logic (ask metal/resin first).
 Export to meshes/prepared/fixture-test-output.stl with measurement report.
 ```
+
+## Template F — Resume east-west signet
+
+```
+Open fixtures/eastwest-emerald-ring.blend.
+Read docs/eastwest-signet-workflow.md and jewelry-casting-prep skill.
+Continue from meshes/prepared/eastwest_v17_refine5-polished-lock.stl.
+Compare head against refs/eastwest-emerald-ring/reference-side-pink.png.
+Run adversarial lock gates (lip, bearing, table open, long sides open) before export.
+Run manifold + ID + wall-under-pavilion gates.
+Export next checkpoint as meshes/prepared/eastwest_vNN_<step>.stl (never overwrite).
+Save blend to fixtures/ when done. Do not apply shrinkage or sprue until I confirm metal/resin.
+```
